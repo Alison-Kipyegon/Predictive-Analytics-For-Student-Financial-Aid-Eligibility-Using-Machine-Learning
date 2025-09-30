@@ -1,2 +1,26 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/F63P1L7A)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20102382&assignment_repo_type=AssignmentRepo)
+Financial Aid Prediction System
+Project Overview
+
+This project develops a machine learning-based system to predict financial aid eligibility for students in higher education institutions. By analyzing historical academic performance, demographic information, and socioeconomic factors, the system helps institutions allocate financial assistance more fairly and efficiently. The model prioritizes transparency and interpretability, providing actionable insights to financial aid officers.
+
+Features
+
+Predicts students’ eligibility for financial aid using historical data.
+
+Supports multiple classification models (Logistic Regression, Decision Trees).
+
+Ensures fairness and interpretable results for decision-making.
+
+Provides data preprocessing and exploratory analysis modules.
+
+Dataset
+
+The system uses a combination of publicly available and synthetic student datasets, containing:
+
+Academic records
+
+Demographic information
+
+Socioeconomic status
+
+Scholarship eligibility labels
