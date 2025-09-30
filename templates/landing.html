@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Financial Aid System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <a class="logo" href="{{ url_for('home') }}">FinancialAid</a>
+            </div>
+            <div class="nav-right">
+                <a href="#about">About</a>
+                <a href="#features">Why Choose</a>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Signup</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page content -->
+    <div class="landing-container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero-content">
+                <h1>Welcome to the Financial Aid Prediction System</h1>
+                <p>Empowering institutions to allocate aid fairly, efficiently, and securely.</p>
+                <div class="buttons">
+                    <a href="{{ url_for('login') }}" class="btn">Login</a>
+                    <a href="{{ url_for('signup') }}" class="btn btn-secondary">Signup</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="page-center">
+                <h1>About the System</h1>
+                <p>
+                    Our platform leverages <strong>machine learning</strong> to analyze
+                    student academic, demographic, and socioeconomic data.  
+                    This ensures financial aid is distributed fairly and transparently.
+                </p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="page-center">
+                <h1>Why Choose Us?</h1>
+                <div class="feature-list">
+                    <div class="feature">
+                        <h3>Fairness</h3>
+                        <p>Ensures aid reaches students who truly need it.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Efficiency</h3>
+                        <p>Automates allocation, saving time and resources.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Security</h3>
+                        <p>2FA and privacy safeguards protect student data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>&copy; 2025 Financial Aid System. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
