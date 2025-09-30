@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a class="logo" href="{{ url_for('home') }}">FinancialAid</a>
+            <div class="nav-right">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Signup</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Login Form -->
+    <div class="container">
+        <h2>Login</h2>
+        <form method="POST">
+            <label>Email:</label>
+            <input type="text" name="email" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <p>Don’t have an account? <a href="{{ url_for('signup') }}">Signup</a></p>
+    </div>
+</body>
+</html>
