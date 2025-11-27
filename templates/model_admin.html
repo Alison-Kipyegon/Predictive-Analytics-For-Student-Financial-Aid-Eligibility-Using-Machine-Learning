@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+{% block page_title %}Model Management{% endblock %}
+{% block content %}
+<div class="stat-card mb-3">
+  <h5>Model Controls</h5>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button id="trainModel" class="btn">Retrain Model</button>
+    <a href="{{ url_for('download_model') }}" class="btn btn-outline">Download Model</a>
+    <button id="viewMetrics" class="btn btn-outline">View Latest Metrics</button>
+  </div>
+</div>
+
+<div id="modelLogs" class="table-card"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('trainModel').addEventListener('click', async ()=>{
+  if(!confirm('Retrain model now?')) return;
+  const res = await fetch("{{ url_for('admin_train_model') }}", {method:'POST'});
+  const txt = await res.text();
+  document.getElementById('modelLogs').innerText = txt;
+});
+document.getElementById('viewMetrics').addEventListener('click', async ()=>{
+  const resp = await fetch("{{ url_for('admin_model_metrics') }}");
+  const data = await resp.json();
+  document.getElementById('modelLogs').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+});
+</script>
+{% endblock %}

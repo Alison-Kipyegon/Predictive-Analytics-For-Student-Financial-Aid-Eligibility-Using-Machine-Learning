@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinancialAid - Predictions</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+
+    <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('dashboard') }}">FinancialAid</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Back to Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 ms-2" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    
+    <div class="explanation-container">
+        <h2>Financial Aid Prediction Explanation</h2>
+        <p>
+            This page shows how various academic, demographic, and socioeconomic factors influenced 
+            the financial aid eligibility prediction for <strong>Student ID {{ student_id }}</strong>.
+        </p>
+
+        <!-- Prediction Summary Box -->
+        <!-- <div class="prediction-box">
+            <p class="prediction-label">
+                {{ prediction_label }} (Confidence: {{ confidence }}%)
+            </p>
+            <div class="confidence-bar">
+                <div class="confidence-fill" style="width: {{ confidence }}%;">
+                    {{ confidence }}%
+                </div>
+            </div>
+            <p style="margin-top: 10px;">{{ outcome_text }}</p>
+        </div>
+    </div> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Feature Impact Chart -->
+        <h3>Feature Impact Chart</h3>
+        <div class="chart-container">
+            <canvas id="impactChart"></canvas>
+        </div>
+
+        
+        <!-- Explanation Summary -->
+        <h3>Explanation Summary</h3>
+        <ul class="impact-list">
+            {% for text in text_explanations %}
+                <li><strong>{{ loop.index }}.</strong> {{ text }}</li>
+            {% endfor %}
+        </ul>
+
+              <!-- Provide Feedback Button -->
+        <div style="text-align:center; margin-top: 30px;">
+            <button id="feedbackBtn" class="feedback-btn">Provide Feedback</button>
+        </div> 
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="feedback-modal">
+    <div class="feedback-modal-content">
+        <h3>Provide Feedback</h3>
+        <form action="{{ url_for('submit_feedback') }}" method="post">
+            <input type="hidden" name="student_id" value="{{ student_id }}">
+            
+            <label>Do you agree with this prediction?</label>
+            <select name="agreement">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            
+            <label>Additional comments:</label>
+            <textarea name="comments" rows="4"></textarea>
+            
+            <div class="feedback-modal-buttons">
+                <button type="submit" class="feedback-btn">Submit Feedback</button>
+                <button type="button" class="feedback-btn close-btn">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+    </div>
+
+<!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">© 2025 FinancialAid System. All rights reserved.</p>
+    </div>
+  </footer>
+
+<!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+        const ctx = document.getElementById('impactChart').getContext('2d');
+        const labels = JSON.parse('{{ importance | map(attribute=0) | list | tojson | safe }}');
+        const values = JSON.parse('{{ importance | map(attribute=1) | list | tojson | safe }}');
+        const colors = values.map(v => v > 0 ? 'rgba(75,192,192,0.8)' : 'rgba(255,99,132,0.8)');
+        const directions = values.map(v => v > 0 ? 'Increased' : 'Decreased');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Impact on Eligibility',
+                    data: values,
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const feature = context.label.replace(/_/g, ' ');
+                                const val = context.raw.toFixed(3);
+                                const dir = directions[context.dataIndex];
+                                return `${feature}: ${dir} likelihood (${val})`;
+                            }
+                        }
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'How Each Factor Affected This Prediction'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Impact Value (Positive = Increases Eligibility)' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Factors' },
+                        ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 }
+                    }
+                }
+            }
+        });
+        const feedbackBtn = document.getElementById('feedbackBtn');
+        const feedbackModal = document.getElementById('feedbackModal');
+        const closeBtn = document.querySelector('.close-btn');
+
+        feedbackBtn.onclick = () => feedbackModal.style.display = 'flex';
+        closeBtn.onclick = () => feedbackModal.style.display = 'none';
+
+        // Close modal if user clicks outside content
+        window.onclick = (event) => {
+            if(event.target === feedbackModal){
+                feedbackModal.style.display = 'none';
+            }
+        };
+
+        </script>
+
+</body>
+</html>

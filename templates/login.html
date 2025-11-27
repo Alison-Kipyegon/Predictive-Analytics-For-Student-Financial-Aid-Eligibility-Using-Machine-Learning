@@ -1,35 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinancialAid - Login</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-inner">
-            <a class="logo" href="{{ url_for('home') }}">FinancialAid</a>
-            <div class="nav-right">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('signup') }}">Signup</a>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Login Form -->
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
     <div class="container">
-        <h2>Login</h2>
-        <form method="POST">
-            <label>Email:</label>
-            <input type="text" name="email" required>
+      <a class="navbar-brand" href="{{ url_for('home') }}">FinancialAid</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            <label>Password:</label>
-            <input type="password" name="password" required>
-
-            <button type="submit" class="btn">Login</button>
-        </form>
-        <p>Don’t have an account? <a href="{{ url_for('signup') }}">Signup</a></p>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 ms-2" href="{{ url_for('login') }}">Login</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <!-- ===== Login Section ===== -->
+  <section class="d-flex align-items-center justify-content-center" style="min-height: 100vh; background-color: #fff; padding-top: 100px;">
+    <div class="container" style="max-width: 450px;">
+      <div class="card p-4 shadow-sm border-0" style="border-radius: 12px;">
+        <h3 class="text-center mb-3" style="color: #6B5B95;">Login to Your Account</h3>
+        <p class="text-center text-muted mb-4">Access the FinancialAid system to manage student predictions</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages mb-3">
+              {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+          <div class="mb-3">
+            <label for="email" class="form-label fw-medium">Email</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label fw-medium">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+          </div>
+        </form>
+
+        <p class="text-center mt-4">Don't have an account? 
+          <a href="{{ url_for('signup') }}" style="color: #6B5B95; text-decoration: none;">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">© 2025 FinancialAid System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

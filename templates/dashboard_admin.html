@@ -1,0 +1,70 @@
+{% extends "admin_base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Overview{% endblock %}
+{% block content %}
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Total Students</h3>
+    <p id="totalStudents">--</p>
+  </div>
+  <div class="stat-card">
+    <h3>Eligible</h3>
+    <p id="totalEligible">--</p>
+  </div>
+  <div class="stat-card">
+    <h3>Not Eligible</h3>
+    <p id="totalNotEligible">--</p>
+  </div>
+  <div class="stat-card">
+    <h3>Model Accuracy</h3>
+    <p id="modelAccuracy">--</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <div class="stat-card">
+      <h5>Eligibility by Region</h5>
+      <canvas id="regionChart" height="120"></canvas>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="stat-card">
+      <h5>Income Distribution</h5>
+      <canvas id="incomeChart" height="120"></canvas>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadDashboard(){
+  const resp = await fetch("{{ url_for('api_admin_summary') }}");
+  const data = await resp.json();
+
+  document.getElementById('totalStudents').innerText = data.total;
+  document.getElementById('totalEligible').innerText = data.eligible;
+  document.getElementById('totalNotEligible').innerText = data.not_eligible;
+  document.getElementById('modelAccuracy').innerText = (data.model_accuracy*100).toFixed(2) + "%";
+
+  // region chart
+  const ctx = document.getElementById('regionChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: data.region_labels, datasets: [{ label: 'Eligible Count', data: data.region_values }] },
+    options: {}
+  });
+
+  // income chart (simple histogram buckets)
+  const ctx2 = document.getElementById('incomeChart');
+  new Chart(ctx2, {
+    type: 'pie',
+    data: { labels: data.income_labels, datasets:[{data:data.income_values}] },
+    options:{}
+  });
+}
+
+loadDashboard();
+</script>
+{% endblock %}
