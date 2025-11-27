@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinancialAid - Predictions</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- <style>
+    /* === Table Layout Fixes === */
+    .table-container {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+      word-wrap: break-word;
+    }
+
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 0.95rem;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    th {
+      background-color: #EDE9FE !important;
+    }
+
+    /* Limit column widths for cleaner layout */
+    th:nth-child(1), td:nth-child(1) { width: 10%; }  /* Student ID */
+    th:nth-last-child(1), td:nth-last-child(1) { width: 10%; } /* Actions */
+    td a.btn {
+      font-size: 0.85rem;
+      padding: 4px 10px;
+    }
+
+    /* DataTables Pagination Alignment */
+    .dataTables_wrapper .dataTables_paginate {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+  </style> -->
+</head>
+
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{{ url_for('dashboard') }}">FinancialAid</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Back to Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 ms-2" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Predictions Section ===== -->
+  <section class="py-5" style="margin-top: 80px; background-color: #fff;">
+    <div class="container-fluid px-5">
+
+      <h2 class="fw-bold text-center mb-4" style="color: #6B5B95;">Student Eligibility Predictions</h2>
+      <p class="text-center text-muted mb-5">
+        View predicted financial aid eligibility results below. Click “Explain” to see how the model made each decision.
+      </p>
+
+      {% if students %}
+      <div class="table-container">
+        <table id="predictionsTable" class="table table-bordered table-striped align-middle shadow-sm w-100">
+          <thead>
+            <tr>
+              {% for col in students[0].keys() %}
+              <th>{{ col.replace('_', ' ')|title }}</th>
+              {% endfor %}
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              {% for val in student.values() %}
+              <td>{{ val }}</td>
+              {% endfor %}
+              <td>
+                <a href="{{ url_for('explain', student_id=student['student_id']) }}" class="btn btn-sm btn-outline-primary">Explain</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-light text-center border mt-5" style="background-color: #EDE9FE;">
+        No predictions available yet. Please 
+        <a href="{{ url_for('upload_data') }}" class="text-decoration-none fw-semibold" style="color:#6B5B95;">upload data</a> 
+        to generate predictions.
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">© 2025 FinancialAid System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#predictionsTable').DataTable({
+        "pageLength": 10,
+        "lengthChange": false,
+        "info": false,
+        "ordering": true,
+        "autoWidth": false,
+        "scrollX": false,
+        "language": {
+          "paginate": {
+            "previous": "&laquo;",
+            "next": "&raquo;"
+          }
+        },
+        "columnDefs": [
+          { "targets": "_all", "className": "text-center" }
+        ]
+      });
+    });
+  </script>
+</body>
+</html>

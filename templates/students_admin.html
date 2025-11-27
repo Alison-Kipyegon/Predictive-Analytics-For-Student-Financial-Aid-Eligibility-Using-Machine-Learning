@@ -1,0 +1,66 @@
+{% extends "admin_base.html" %}
+{% block page_title %}Students{% endblock %}
+{% block content %}
+<div class="table-card">
+  <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+    <h5>Students</h5>
+    <div>
+      <button class="btn" id="exportCsv">Export CSV</button>
+      <a href="{{ url_for('upload_page') }}" class="btn btn-outline">Upload</a>
+    </div>
+  </div>
+
+  <table id="studentsTable" class="display" style="width:100%">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>School</th><th>Income</th><th>Prediction</th><th>Actions</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- details modal -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Student details</h5></div>
+      <div class="modal-body" id="studentDetailBody"></div>
+      <div class="modal-footer"><button data-bs-dismiss="modal" class="btn btn-outline">Close</button></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+  const table = $('#studentsTable').DataTable({
+    ajax: "{{ url_for('api_students') }}",
+    columns:[
+      {data:'id'}, {data:'name'}, {data:'school'}, {data:'income'}, 
+      {data:'prediction',
+       render: function(d){ return d==1? '<span class="badge bg-success">Eligible</span>':'<span class="badge bg-secondary">Not</span>'; }},
+      {data:null, render:function(row){
+        return `<button class="btn btn-outline btn-sm viewBtn" data-id="${row.id}">View</button>
+                <button class="btn btn-danger btn-sm delBtn" data-id="${row.id}">Delete</button>`;
+      }}
+    ]
+  });
+
+  $('#studentsTable tbody').on('click', '.viewBtn', function(){
+    const id = $(this).data('id');
+    fetch(`/admin/student/${id}`).then(r=>r.text()).then(html=>{
+      $('#studentDetailBody').html(html);
+      $('#studentModal').modal('show');
+    });
+  });
+
+  $('#studentsTable tbody').on('click', '.delBtn', function(){
+    if(!confirm('Delete record?')) return;
+    const id = $(this).data('id');
+    fetch(`/admin/student/${id}`, {method:'DELETE'}).then(()=>table.ajax.reload());
+  });
+
+  $('#exportCsv').on('click', ()=> window.location = "{{ url_for('admin_export_students') }}");
+});
+</script>
+{% endblock %}

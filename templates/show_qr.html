@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Setup 2FA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="qr-wrapper">
+        <h2>Scan This QR Code</h2>
+
+        <div class="qr-box">
+            <img src="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" alt="QR Code">
+        </div>
+
+        <p class="instruction-text">
+            Scan this QR using Google Authenticator or any 2FA app.<br>
+            After scanning, click below to enter the 6-digit code.
+        </p>
+
+        <a class="continue-btn" href="{{ url_for('two_factor') }}">
+            Enter 2FA Code
+        </a>
+    </div>
+
+</body>
+</html>

@@ -1,78 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Financial Aid System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinancialAid - Home</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-inner">
-            <div class="nav-left">
-                <a class="logo" href="{{ url_for('home') }}">FinancialAid</a>
-            </div>
-            <div class="nav-right">
-                <a href="#about">About</a>
-                <a href="#features">Why Choose</a>
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('signup') }}">Signup</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Page content -->
-    <div class="landing-container">
-        <!-- Hero Section -->
-        <header class="hero">
-            <div class="hero-content">
-                <h1>Welcome to the Financial Aid Prediction System</h1>
-                <p>Empowering institutions to allocate aid fairly, efficiently, and securely.</p>
-                <div class="buttons">
-                    <a href="{{ url_for('login') }}" class="btn">Login</a>
-                    <a href="{{ url_for('signup') }}" class="btn btn-secondary">Signup</a>
-                </div>
-            </div>
-        </header>
-
-        <!-- About Section -->
-        <section class="about" id="about">
-            <div class="page-center">
-                <h1>About the System</h1>
-                <p>
-                    Our platform leverages <strong>machine learning</strong> to analyze
-                    student academic, demographic, and socioeconomic data.  
-                    This ensures financial aid is distributed fairly and transparently.
-                </p>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features" id="features">
-            <div class="page-center">
-                <h1>Why Choose Us?</h1>
-                <div class="feature-list">
-                    <div class="feature">
-                        <h3>Fairness</h3>
-                        <p>Ensures aid reaches students who truly need it.</p>
-                    </div>
-                    <div class="feature">
-                        <h3>Efficiency</h3>
-                        <p>Automates allocation, saving time and resources.</p>
-                    </div>
-                    <div class="feature">
-                        <h3>Security</h3>
-                        <p>2FA and privacy safeguards protect student data.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Footer Section -->
-        <footer class="footer">
-            <p>&copy; 2025 Financial Aid System. All Rights Reserved.</p>
-        </footer>
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+    <div class="container-fluid px-5">
+      <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">FinancialAid</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link mx-2" href="{{ url_for('signup') }}">Sign Up</a></li>
+          <li class="nav-item"><a class="btn btn-primary ms-2 px-4 py-2" href="{{ url_for('login') }}">Login</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero d-flex align-items-center text-center">
+    <div class="container" style="max-width:80%;">
+      <h1 class="display-4 fw-bold mb-3">Empowering Fair Access to Financial Aid</h1>
+      <p class="lead mb-4">Predict eligibility and support students efficiently with our data-driven Financial Aid system.</p>
+      <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-5">Get Started</a>
+    </div>
+  </section>
+
+  <!-- ===== Features Section ===== -->
+  <section class="py-5 bg-white">
+    <div class="container" style="max-width:80%;">
+      <div class="row text-center gy-4">
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow-sm border-0">
+            <h5 class="fw-bold mb-2">Predict Student Eligibility</h5>
+            <p class="text-muted">Upload student data and receive accurate predictions using AI models trained for fairness and transparency.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow-sm border-0">
+            <h5 class="fw-bold mb-2">Data Visualization</h5>
+            <p class="text-muted">View detailed reports and charts that help you understand trends in aid allocation and student needs.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow-sm border-0">
+            <h5 class="fw-bold mb-2">Simplified Workflow</h5>
+            <p class="text-muted">A clean interface for financial aid officers to manage and assess student eligibility with ease.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer py-4 mt-5 text-center">
+    <div class="container">
+      <p class="mb-0">© 2025 FinancialAid System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

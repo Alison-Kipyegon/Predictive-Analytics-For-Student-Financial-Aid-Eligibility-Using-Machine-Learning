@@ -1,0 +1,61 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="settings-container">
+    <h1>Admin Settings</h1>
+    <hr>
+
+    <!-- Profile Section -->
+    <section class="settings-section">
+        <h2>Profile Information</h2>
+        <form action="{{ url_for('update_profile') }}" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Admin" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="admin@example.com" required>
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </section>
+
+    <!-- Password Section -->
+    <section class="settings-section">
+        <h2>Change Password</h2>
+        <form action="{{ url_for('change_password') }}" method="POST">
+            <label for="current_password">Current Password:</label>
+            <input type="password" name="current_password" id="current_password" required>
+
+            <label for="new_password">New Password:</label>
+            <input type="password" name="new_password" id="new_password" required>
+
+            <label for="confirm_password">Confirm New Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" required>
+
+            <button type="submit">Change Password</button>
+        </form>
+    </section>
+
+    <!-- Site Preferences Section -->
+    <section class="settings-section">
+        <h2>Site Preferences</h2>
+        <form action="{{ url_for('update_preferences') }}" method="POST">
+            <label for="theme">Theme:</label>
+            <select name="theme" id="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="skyblue">Sky Blue</option>
+            </select>
+
+            <label for="notifications">Email Notifications:</label>
+            <select name="notifications" id="notifications">
+                <option value="enabled">Enabled</option>
+                <option value="disabled">Disabled</option>
+            </select>
+
+            <button type="submit">Save Preferences</button>
+        </form>
+    </section>
+</div>
+
+{% endblock %}

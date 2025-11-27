@@ -1,47 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - Financial Aid System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinancialAid - Sign Up</title>
+
+  <!-- Bootstrap & Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-inner">
-            <a class="logo" href="{{ url_for('home') }}">FinancialAid</a>
-            <div class="nav-right">
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('signup') }}">Signup</a>
-            </div>
-        </div>
-    </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
-    <!-- Signup Form -->
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg shadow-sm">
     <div class="container">
-        <h2>Create an Account</h2>
-        <form method="POST">
-            <label for="email">Email</label>
-            <input type="email" name="email" required>
+      <a class="navbar-brand" href="{{ url_for('home') }}">FinancialAid</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            <label for="password">Password</label>
-            <input type="password" name="password" required>
-
-            <button type="submit" class="btn">Signup</button>
-        </form>
-        <p style="margin-top: 15px;">
-            Already have an account? 
-            <a href="{{ url_for('login') }}">Login here</a>
-        </p>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 ms-2" href="{{ url_for('login') }}">Login</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <!-- ===== Signup Section ===== -->
+  <section class="d-flex align-items-center justify-content-center" style="min-height: 100vh; background-color: #fff; padding-top: 100px;">
+    <div class="container" style="max-width: 500px;">
+      <div class="card p-4 shadow-sm border-0" style="border-radius: 12px;">
+        <h3 class="text-center mb-3" style="color: #6B5B95;">Create an Account</h3>
+        <p class="text-center text-muted mb-4">Join FinancialAid to manage and predict student eligibility efficiently</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages mb-3">
+              {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('signup') }}">
+          <div class="mb-3">
+            <label for="name" class="form-label fw-medium">Full Name</label>
+            <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label fw-medium">Email</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label fw-medium">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter a secure password" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="confirm_password" class="form-label fw-medium">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Re-enter your password" required>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+          </div>
+        </form>
+
+        <p class="text-center mt-4">Already have an account? 
+          <a href="{{ url_for('login') }}" style="color: #6B5B95; text-decoration: none;">Login</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">© 2025 FinancialAid System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
